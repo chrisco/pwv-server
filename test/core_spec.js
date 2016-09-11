@@ -41,6 +41,46 @@ describe('application logic', () => {
                 entries: List.of('11:14')
             }));
         });
+
+        it('puts winner of current vote back to entries', () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('Donnie Darko', 'Point Break'),
+                    tally: Map({
+                        'Donnie Darko': 4,
+                        'Point Break': 2
+                    })
+                }),
+                entries: List.of('The Outsiders', 'Ghost', 'Dirty Dancing')
+            });
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('The Outsiders', 'Ghost')
+                }),
+                entries: List.of('Dirty Dancing', 'Donnie Darko')
+            }));
+        });
+
+        it('puts both from tied vote back to entries', () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('Donnie Darko', 'Point Break'),
+                    tally: Map({
+                        'Donnie Darko': 3,
+                        'Point Break': 3
+                    })
+                }),
+                entries: List.of('The Outsiders', 'Ghost', 'Dirty Dancing')
+            });
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                vote: Map({
+                    pair: List.of('The Outsiders', 'Ghost')
+                }),
+                entries: List.of('Dirty Dancing', 'Donnie Darko', 'Point Break')
+            }));
+        });
     });
 
     describe('vote', () => {
