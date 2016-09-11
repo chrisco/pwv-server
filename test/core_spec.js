@@ -81,6 +81,23 @@ describe('application logic', () => {
                 entries: List.of('Dirty Dancing', 'Donnie Darko', 'Point Break')
             }));
         });
+
+        it("picks the winner when there's one entry left", () => {
+            const state = Map({
+                vote: Map({
+                    pair: List.of('Donnie Darko', 'Point Break'),
+                    tally: Map({
+                        'Donnie Darko': 4,
+                        'Point Break': 2
+                    })
+                }),
+                entries: List()
+            });
+            const nextState = next(state);
+            expect(nextState).to.equal(Map({
+                winner: 'Donnie Darko'
+            }));
+        });
     });
 
     describe('vote', () => {
